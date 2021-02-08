@@ -330,6 +330,8 @@ class RedisFlatDict(MutableMapping[str, T]):
         """Return if d[key:type] has been marked for garbage collection.
         Raises a KeyError if *key:type* is not in the map.
         """
+        if 'lock' in key:
+            return False
         composite_key = self._make_composite_key(key)
         value = self.redis.get(composite_key)
         if value is None:
